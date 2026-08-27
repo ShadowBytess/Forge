@@ -1,0 +1,117 @@
+[package]
+name = "forge"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "A graphical package manager frontend for Arch Linux (pacman, AUR, Flatpak)"
+license = "MIT"
+repository = "https://example.invalid/forge"
+keywords = ["archlinux", "pacman", "aur", "flatpak", "package-manager"]
+categories = ["gui", "command-line-utilities"]
+
+[dependencies]
+async-trait = "0.1.92"
+clap = { version = "4", features = ["derive"] }
+dirs = "6"
+futures = "0.3.34"
+libc = "0.2.189"
+reqwest = { version = "0.12", default-features = false, features = [
+    "json",
+    "rustls-tls",
+] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+thiserror = "2"
+tokio = { version = "1", features = [
+    "rt-multi-thread",
+    "macros",
+    "process",
+    "io-util",
+    "sync",
+    "time",
+    "fs",
+] }
+toml = "0.9"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+gtk4 = { version = "0.11", optional = true }
+libadwaita = { version = "0.9", features = ["v1_5"], optional = true }
+
+[features]
+default = ["gui"]
+gui = ["dep:gtk4", "dep:libadwaita"]
+
+[profile.release]
+lto = "thin"
+strip = true
+codegen-units = 1
+
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Deliberate allowances for this codebase's style:
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+redundant_closure_for_method_calls = "allow"
+cast_precision_loss = "allow"
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_sign_loss = "allow"
+map_unwrap_or = "allow"
+match_wildcard_for_single_variants = "allow"
+# GTK builders legitimately return Self and use `&mut`-free chains:
+new_without_default = "allow"
+should_implement_trait = "allow"
+unused_self = "allow"
+type_complexity = "allow"
+similar_names = "allow"
+items_after_statements = "allow"
+redundant_else = "allow"
+needless_borrows_for_generic_args = "allow"
+single_match_else = "allow"
+too_many_lines = "allow"
+struct_excessive_bools = "allow"
+fn_params_excessive_bools = "allow"
+derivable_impls = "allow"
+redundant_clone = "allow"
+needless_continue = "allow"
+format_push_string = "allow"
+doc_markdown = "allow"
+let_and_return = "allow"
+needless_raw_string_hashes = "allow"
+uninlined_format_args = "allow"
+redundant_guards = "allow"
+option_map_unit_fn = "allow"
+semicolon_if_nothing_returned = "allow"
+wildcard_imports = "allow"
+match_like_matches_macro = "allow"
+default_trait_access = "allow"
+cloned_instead_of_copied = "allow"
+from_over_into = "allow"
+elidable_lifetime_names = "allow"
+unnecessary_wraps = "allow"
+used_underscore_binding = "allow"
+must_use_unit = "allow"
+match_unit = "allow"
+default_field_assignment = "allow"
+cast_lossless = "allow"
+useless_conversion = "allow"
+unnecessary_to_owned = "allow"
+unused_async = "allow"
+unnested_or_patterns = "allow"
+ptr_arg = "allow"
+ignored_unit_patterns = "allow"
+return_self_not_must_use = "allow"
+field_reassign_with_default = "allow"
+manual_pattern_char_comparison = "allow"
+needless_lifetimes = "allow"
+unnecessary_sort_by = "allow"
+assigning_clones = "allow"
+enum_glob_use = "allow"
+needless_pass_by_value = "allow"
