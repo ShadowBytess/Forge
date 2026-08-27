@@ -1,6 +1,6 @@
 # Forge
 
-**A graphical package manager for Arch Linux — pacman, AUR and Flatpak behind
+**A graphical package manager for Arch Linux - pacman, AUR and Flatpak behind
 one clean, modern interface.**
 
 Forge is a GTK4 / libadwaita frontend (with a matching CLI) that orchestrates
@@ -58,7 +58,7 @@ Forge treats package management as a security-sensitive activity:
 | No sudo | Privileged operations spawn `pkexec <tool> <args>` so the standard polkit agent performs authentication. Dismissed prompts map to a clean "authentication denied" state. |
 | Least privilege | Read-only queries, AUR builds and user-scope Flatpak operations never escalate at all. |
 | Informed AUR installs | AUR packages are labelled community-produced everywhere; building requires an explicit review step (configurable, on by default). |
-| Native tools decide | Dependency closures, conflict detection and removal cascades come from pacman/flatpak output that is machine-stable (`--print-format`, `--columns`) — never from prose parsing or Forge's own resolver. |
+| Native tools decide | Dependency closures, conflict detection and removal cascades come from pacman/flatpak output that is machine-stable (`--print-format`, `--columns`) - never from prose parsing or Forge's own resolver. |
 
 ## Backends
 
@@ -81,7 +81,7 @@ pub trait Backend: Send + Sync {
 ```
 
 Adding another package format (Nix, AppImage catalogs, …) means implementing
-this trait and registering it in `Registry::with_config` — no UI changes.
+this trait and registering it in `Registry::with_config` - no UI changes.
 A deterministic `MockBackend` ships in-tree for tests and UI development.
 
 ## Building
@@ -134,7 +134,7 @@ confirmation on terminals (`--yes` to skip). Non-interactive runs without
 
 ## Configuration
 
-`~/.config/forge/config.toml` — see
+`~/.config/forge/config.toml` - see
 [`docs/examples/forge-config.toml`](docs/examples/forge-config.toml) for a
 fully commented example. Highlights: `general.confirm_before_transaction`,
 per-source enable switches, `sources.preferred_repositories`,
@@ -188,4 +188,4 @@ executor's event ordering/cancellation using the mock backend.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Apache - see [LICENSE](LICENSE).
