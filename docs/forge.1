@@ -1,0 +1,150 @@
+.\" Manual page for forge.
+.TH FORGE 1 "2026-08-24" "forge 0.1.0" "User Commands"
+.SH NAME
+forge \- graphical and command-line package manager frontend for Arch Linux
+.SH SYNOPSIS
+.B forge
+.RI [ COMMAND ]
+.RI [ OPTIONS ]
+.br
+.B forge search
+.I QUERY
+.br
+.B forge info
+.I PACKAGE
+.br
+.B forge install
+.RI [ \-\-reviewed ]
+.I PACKAGE...
+.br
+.B forge remove
+.I PACKAGE...
+.br
+.B forge update
+.RI [ \-y ]
+.br
+.B forge list
+.RI [ \-\-source
+.IR SOURCE ]
+.br
+.B forge config-path
+.SH DESCRIPTION
+.B Forge
+is a package-management frontend for Arch Linux and Arch-based distributions.
+It orchestrates existing packaging systems through a common backend
+abstraction:
+.TP
+.B Repositories (pacman)
+Official packages. pacman itself performs all dependency resolution; Forge
+never reimplements it. Privileged operations are executed via
+.BR pkexec (1)
+so the desktop polkit agent asks for authentication. Forge never invokes
+sudo.
+.TP
+.B AUR
+Community packages from aur.archlinux.org. Searches use the documented RPC
+v5 API. Before any AUR package is built, Forge fetches its source with git,
+displays the PKGBUILD for review, lists build dependencies obtained from
+.B makepkg \-\-printsrcinfo
+and requires explicit confirmation. Builds run unprivileged via makepkg;
+only the resulting archive installation uses polkit.
+.TP
+.B Flatpak
+Applications from Flatpak remotes, in per-user or system-wide
+installations. User-scope operations never require authentication.
+.PP
+Running
+.B forge
+without a command launches the graphical interface (GTK4 / libadwaita).
+Every CLI subcommand shares the same backend architecture as the GUI.
+A transaction preview is always shown before any significant operation;
+nothing is installed, removed or upgraded without explicit confirmation.
+.SH COMMANDS
+.TP
+.B search
+Search across enabled sources. Options:
+.RS
+.TP
+.BR \-s ", " \-\-source " " \fISOURCE\fR
+Restrict to \fBrepos\fR, \fBaur\fR or \fBflatpak\fR.
+.TP
+.B \-\-installed
+Only show installed packages.
+.RE
+.TP
+.B info
+Show detailed metadata for one package: version, source, dependencies,
+optional dependencies, homepage, licenses, maintainer, sizes and install
+status.
+.TP
+.B install
+Install one or more packages. A preview (including dependencies pulled in
+by pacman, download/installed sizes and conflicts) is shown first.
+Options:
+.RS
+.TP
+.BR \-y ", " \-\-yes
+Skip the confirmation prompt.
+.TP
+.B \-\-reviewed
+AUR only: assert that you have reviewed the PKGBUILD. Required unless
+disabled in the configuration file.
+.RE
+.TP
+.B remove
+Remove packages. The preview shows the exact removal set computed by pacman
+itself (\fB\-Rs\fR semantics) plus which no-longer-needed dependencies would
+go with them.
+.TP
+.B update
+Refresh repository databases and apply all available updates across every
+enabled backend (pacman full upgrade, AUR rebuilds, Flatpak updates).
+.TP
+.B list
+List installed packages, optionally filtered by source.
+.TP
+.B config-path
+Print the location of the configuration file.
+.SH CONFIGURATION
+Configuration lives at
+.I ~/.config/forge/config.toml
+and every key has a safe default; a missing file is not an error. See
+.B /usr/share/doc/forge/examples/forge-config.toml
+for a fully commented example covering: confirmation behaviour, source
+visibility (pacman/AUR/Flatpak), preferred repositories, the AUR build
+directory and mandatory PKGBUILD review, Flatpak scope visibility, window
+preferences and parallel downloads.
+.SH SECURITY NOTES
+.IP \(bu 3
+Package names are passed to external tools as argv elements; no shell is
+ever involved and input is validated before use.
+.IP \(bu 3
+Privilege escalation uses polkit exclusively; sudo is never invoked and
+passwords are never requested by Forge itself.
+.IP \(bu 3
+AUR packages are community-produced and are clearly labelled as such.
+Forge refuses to build an AUR package until its PKGBUILD has been reviewed.
+.IP \(bu 3
+The origin of every package (repository, AUR, Flatpak remote and scope) is
+displayed wherever it appears.
+.SH FILES
+.TP
+.I ~/.config/forge/config.toml
+User configuration.
+.TP
+.I ~/.cache/forge/aur/
+Default directory for cloned AUR repositories and build artefacts.
+.TP
+.I /usr/share/applications/forge.desktop
+Desktop entry.
+.SH EXIT STATUS
+Returns 0 on success, 1 on error and 130 when cancelled.
+.SH SEE ALSO
+.BR pacman (8),
+.BR flatpak (1),
+.BR makepkg (8),
+.BR pkexec (1)
+.PP
+Full documentation: /usr/share/doc/forge/README.md
+.SH BUGS
+Report issues at the project's issue tracker.

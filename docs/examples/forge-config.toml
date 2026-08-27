@@ -1,0 +1,52 @@
+# ~/.config/forge/config.toml — example configuration
+#
+# Forge works with no configuration file at all: every key below is
+# optional and falls back to the defaults shown here.
+
+[general]
+# Always show a transaction preview and ask for confirmation before
+# installing, removing or upgrading anything. Strongly recommended.
+confirm_before_transaction = true
+
+[sources]
+# Toggle entire packaging systems.
+enable_pacman = true
+enable_aur = true
+enable_flatpak = true
+
+# Repositories listed here are sorted first in search results.
+preferred_repositories = ["core", "extra"]
+
+[aur]
+# SECURITY: require an explicit PKGBUILD review step before any AUR
+# package can be built or installed. Keep this enabled unless you fully
+# understand the implications.
+require_pkgbuild_review = true
+
+# Where AUR repositories are cloned and packages are built.
+build_directory = "~/.cache/forge/aur"
+
+# Include AUR results in the global search.
+enabled_in_search = true
+
+[flatpak]
+# Show and operate on system-wide and per-user installations.
+show_system = true
+show_user = true
+
+enabled_in_search = true
+
+[ui]
+# Page shown at startup: home | browse | installed | updates | aur |
+# flatpak | transactions | settings.
+default_page = "home"
+
+window_width = 1150
+window_height = 760
+
+# "system" follows the desktop colour scheme; also "light" or "dark".
+color_scheme = "system"
+
+[download]
+# Upper bound communicated to backends that support parallel downloads.
+parallel_downloads = 4
