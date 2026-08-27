@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Forge
+GenericName=Package Manager
+Comment=Manage pacman, AUR and Flatpak packages
+Exec=forge
+Icon=forge
+Terminal=false
+Categories=System;PackageManager;
+Keywords=packages;install;search;updates;pacman;aur;flatpak;
+StartupNotify=true
+X-GNOME-UsesNotifications=true
